@@ -28,25 +28,21 @@ function checkAuthMiddleware(
   const { authorization } = request.headers;
 
   if (!authorization) {
-    return response
-      .status(401)
-      .json({
-        error: true,
-        code: "token.invalid",
-        message: "Token not present.",
-      });
+    return response.status(401).json({
+      error: true,
+      code: "token.invalid",
+      message: "Token not present.",
+    });
   }
 
   const [, token] = authorization?.split(" ");
 
   if (!token) {
-    return response
-      .status(401)
-      .json({
-        error: true,
-        code: "token.invalid",
-        message: "Token not present.",
-      });
+    return response.status(401).json({
+      error: true,
+      code: "token.invalid",
+      message: "Token not present.",
+    });
   }
 
   try {
@@ -70,25 +66,21 @@ function addUserInformationToRequest(
   const { authorization } = request.headers;
 
   if (!authorization) {
-    return response
-      .status(401)
-      .json({
-        error: true,
-        code: "token.invalid",
-        message: "Token not present.",
-      });
+    return response.status(401).json({
+      error: true,
+      code: "token.invalid",
+      message: "Token not present.",
+    });
   }
 
   const [, token] = authorization?.split(" ");
 
   if (!token) {
-    return response
-      .status(401)
-      .json({
-        error: true,
-        code: "token.invalid",
-        message: "Token not present.",
-      });
+    return response.status(401).json({
+      error: true,
+      code: "token.invalid",
+      message: "Token not present.",
+    });
   }
 
   try {
@@ -98,13 +90,11 @@ function addUserInformationToRequest(
 
     return next();
   } catch (err) {
-    return response
-      .status(401)
-      .json({
-        error: true,
-        code: "token.invalid",
-        message: "Invalid token format.",
-      });
+    return response.status(401).json({
+      error: true,
+      code: "token.invalid",
+      message: "Invalid token format.",
+    });
   }
 }
 
@@ -178,6 +168,10 @@ app.post("/refresh", addUserInformationToRequest, (request, response) => {
   });
 });
 
+app.get("/", (request, response) => {
+  response.json({ message: "API is running 😎" });
+});
+
 app.get("/me", checkAuthMiddleware, (request, response) => {
   const email = request.user;
 
@@ -196,4 +190,8 @@ app.get("/me", checkAuthMiddleware, (request, response) => {
   });
 });
 
-app.listen(process.env.PORT || 3333);
+const port = process.env.PORT || 3333;
+
+app.listen(port, () => {
+  console.log(`API is running 👏: https://localhost:${port}`);
+});
